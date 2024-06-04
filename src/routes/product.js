@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const productController = require('../app/controllers/ProductController');
+const authService = require('../services/authenticateServices');
 
 router.get('/getProduct', productController.getProduct);
 router.post('/storeProduct', productController.storeProduct);
@@ -9,5 +10,10 @@ router.put('/editProduct', productController.update);
 router.delete('/delete', productController.destroy);
 router.delete('/forceDestroy', productController.forceDestroy);
 router.patch('/restore', productController.restore);
+
+router.post('/addToCart', authService.authenticateToken, productController.addToCart);
+router.get('/getCart', authService.authenticateToken, productController.getProduct);
+router.delete('/removeAllCart', authService.authenticateToken, productController.removeAllCart);
+router.delete('/removeCart', authService.authenticateToken, productController.removeCart);
 
 module.exports = router;
