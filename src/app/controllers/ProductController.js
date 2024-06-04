@@ -4,50 +4,85 @@ const Cart = require('../models/Cart')
 
 class ProductController {
     // [GET] /product/getProduct
-    getProduct(req, res, next) {
-        Product.find()
+    async getProduct(req, res, next) {
+        await Product.find({deleted: false})
             .then(products => res.json(products))
             .catch(next)
     }
 
     // [POST] /product/storeProduct
-    storeProduct(req, res, next) {
-        let data = new Product(req.body)
-        data.save()
-            .catch((err) => {
-                return res.status(400).json("error occured");
-            })
-            .then(() => {
-                return res.status(200).json("data is saved")
-            });
+    async storeProduct(req, res, next) {
+        try {
+            const token = await req.user;
+            const user = await User.find({ email: token.email });
+            if(user[0]["role"] !== "admin") return res.status(403).json("you don't have permission!")
+            let data = new Product(req.body)
+            data.save()
+                .catch((err) => {
+                    return res.status(400).json("error occured");
+                })
+                .then(() => {
+                    return res.status(200).json("data is saved")
+                });
+        } catch (error) {
+            return res.status(400).send("error occured!");
+        }
     }
 
     // [PUT] /product/editProduct
-    update(req, res, next){
-        Product.updateOne({ _id: req.body._id }, req.body)
-            .then(() => res.status(200).json("updated successfully!"))
-            .catch((err) => res.status(400).json("error occured"))
+    async update(req, res, next){
+        try {
+            const token = await req.user;
+            const user = await User.find({ email: token.email });
+            if(user[0]["role"] !== "admin") return res.status(403).json("you don't have permission!")
+            Product.updateOne({ _id: req.body._id }, req.body)
+                .then(() => res.status(200).json("updated successfully!"))
+                .catch((err) => res.status(400).json("error occured"))  
+        } catch (error) {
+            return res.status(400).send("error occured!");
+        }
     }
 
     // [DELETE] /product/delete
-    destroy(req, res, next) {
-        Product.delete({ _id: req.body._id })
-            .then(() => res.status(200).json("delete successfully!"))
-            .catch((err) => res.status(400).json("error occured"));
+    async destroy(req, res, next) {
+        try {
+            const token = await req.user;
+            const user = await User.find({ email: token.email });
+            if(user[0]["role"] !== "admin") return res.status(403).json("you don't have permission!")
+            Product.delete({ _id: req.body._id })
+                .then(() => res.status(200).json("delete successfully!"))
+                .catch((err) => res.status(400).json("error occured"));
+        } catch (error) {
+            return res.status(400).send("error occured!");
+        }
     }
 
     // [DELETE] /product/forceDestroy
-    forceDestroy(req, res, next) {
-        Product.deleteOne({ _id: req.body._id })
-            .then(() => res.status(200).json("Force Delete successfully!"))
-            .catch((err) => res.status(400).json("error occured"));
+    async forceDestroy(req, res, next) {
+        try {
+            const token = await req.user;
+            const user = await User.find({ email: token.email });
+            if(user[0]["role"] !== "admin") return res.status(403).json("you don't have permission!")
+            Product.deleteOne({ _id: req.body._id })
+                .then(() => res.status(200).json("Force Delete successfully!"))
+                .catch((err) => res.status(400).json("error occured"));
+        } catch (error) {
+            return res.status(400).send("error occured!");
+        }
     }
 
     // [PATCH] /product/restore
-    restore(req, res, next) {
-        Product.restore({ _id: req.body._id })
-            .then(() => res.status(200).json("restore successfully!"))
-            .catch((err) => res.status(400).json("error occured"));
+    async restore(req, res, next) {
+        try {
+            const token = await req.user;
+            const user = await User.find({ email: token.email });
+            if(user[0]["role"] !== "admin") return res.status(403).json("you don't have permission!")
+            Product.restore({ _id: req.body._id })
+                .then(() => res.status(200).json("restore successfully!"))
+                .catch((err) => res.status(400).json("error occured"));
+        } catch (error) {
+            return res.status(400).send("error occured!");
+        }
     }
 
     // [POST] /product/addToCart
@@ -74,7 +109,7 @@ class ProductController {
     }
 
     // [GET] /product/getCart
-    async getProduct(req, res, next) {
+    async getCart(req, res, next) {
         try {
             const token = await req.user;
             const user = await User.find({ email: token.email });
@@ -88,7 +123,7 @@ class ProductController {
             }
             return res.status(200).send(data);
         } catch (err) {
-            return res.status(400).send("something gone wrong at getting the user");
+            return res.status(400).send("something gone wrong at getting products");
         }
     }
 
@@ -102,7 +137,7 @@ class ProductController {
 
             return res.status(200).send("remove from cart successfully");
         } catch (err) {
-            return res.status(400).send("something gone wrong at getting the user");
+            return res.status(400).send("something gone wrong at remove cart");
         }
     }
 
@@ -119,7 +154,7 @@ class ProductController {
 
             return res.status(200).send("product removed from cart");
         } catch (err) {
-            return res.status(400).send("something gone wrong at getting the user");
+            return res.status(400).send("something gone wrong at remove cart");
         }
     }
 }

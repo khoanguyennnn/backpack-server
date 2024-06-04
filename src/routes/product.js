@@ -5,14 +5,14 @@ const productController = require('../app/controllers/ProductController');
 const authService = require('../services/authenticateServices');
 
 router.get('/getProduct', productController.getProduct);
-router.post('/storeProduct', productController.storeProduct);
-router.put('/editProduct', productController.update);
-router.delete('/delete', productController.destroy);
-router.delete('/forceDestroy', productController.forceDestroy);
-router.patch('/restore', productController.restore);
+router.post('/storeProduct', authService.authenticateToken, productController.storeProduct);
+router.put('/editProduct',authService.authenticateToken, productController.update);
+router.delete('/delete', authService.authenticateToken, productController.destroy);
+router.delete('/forceDestroy', authService.authenticateToken, productController.forceDestroy);
+router.patch('/restore', authService.authenticateToken, productController.restore);
 
 router.post('/addToCart', authService.authenticateToken, productController.addToCart);
-router.get('/getCart', authService.authenticateToken, productController.getProduct);
+router.get('/getCart', authService.authenticateToken, productController.getCart);
 router.delete('/removeAllCart', authService.authenticateToken, productController.removeAllCart);
 router.delete('/removeCart', authService.authenticateToken, productController.removeCart);
 
