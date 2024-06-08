@@ -12,8 +12,7 @@ app.use(express.urlencoded({extended: true}));
 db.connect();
 
 // Router init
-route(app);
-
+route(app)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
