@@ -1,0 +1,42 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #60afdf;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+p {
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.6rem;
+}
+
+button,
+input,
+[tabindex] {
+    border: none;
+    outline: none;
+    font-size: 1.6rem !important;
+}
+
+a,
+a:hover,
+a:active,
+a:visited,
+a:link {
+    text-decoration: none;
+}
