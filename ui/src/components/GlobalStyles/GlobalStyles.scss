@@ -3,6 +3,7 @@
 
 :root {
     --primary: #60afdf;
+    --search-width: 361px; 
 }
 
 * {
@@ -38,5 +39,6 @@ a:hover,
 a:active,
 a:visited,
 a:link {
+    color: black;
     text-decoration: none;
 }

@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faXmark, faSpinner, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import 'tippy.js/dist/tippy.css';
 
+import Search from '../Search';
 import styles from './Header.module.scss';
 
 const cx = classNames.bind(styles)
@@ -15,16 +15,7 @@ function Header() {
                         <h2>Shopping</h2>
                     </div>
                     <div className={cx('actions')}></div>
-                    <div className={cx('search')}>
-                        <input type="text" placeholder='Search' spellCheck={false}/>
-                        <button className={cx('clear')}>
-                            <FontAwesomeIcon icon={faXmark}/>
-                        </button>
-                        <FontAwesomeIcon className={cx('loading')} icon={faSpinner}/>
-                        <button className={cx('search-btn')}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass}/>
-                        </button>
-                    </div>
+                    <Search/>
                 </div>
             </header>
         </>

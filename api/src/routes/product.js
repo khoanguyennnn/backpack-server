@@ -5,6 +5,7 @@ const productController = require('../app/controllers/ProductController');
 const authService = require('../services/authenticateServices');
 
 router.get('/getProduct', productController.getProduct);
+router.get('/search', productController.search);
 router.post('/storeProduct', authService.authenticateToken, productController.storeProduct);
 router.put('/editProduct',authService.authenticateToken, productController.update);
 router.delete('/delete', authService.authenticateToken, productController.destroy);

@@ -157,6 +157,19 @@ class ProductController {
             return res.status(400).send("something gone wrong at remove cart");
         }
     }
+
+
+    // [GET] /product/search
+    async search(req, res, next){
+        await Product.find({
+            deleted: false,
+            "$or": [
+                {title:{$regex:req.query.q}}
+            ]
+        })
+            .then(products => res.json(products))
+            .catch(next)
+    }
 }
 
 module.exports = new ProductController();

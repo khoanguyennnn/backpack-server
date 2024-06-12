@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
+const slug = require('mongoose-slug-generator');
+
+mongoose.plugin(slug);
 
 const Product = new mongoose.Schema(
     {
@@ -12,6 +15,7 @@ const Product = new mongoose.Schema(
             rate: Number,
             count: Number
         },
+        slug: { type: String, slug: 'title' },
     },
     {
         timestamps: true,
