@@ -5,7 +5,7 @@ import Item from '../pages/Item';
 const publicRoutes = [
     { path: '/', component: Home},
     { path: '/products', component: Product},
-    { path: '/products/:item', component: Item},
+    { path: '/products/:slug', component: Item},
 ]
 
 const privateRoutes = [

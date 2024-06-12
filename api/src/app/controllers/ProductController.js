@@ -10,6 +10,13 @@ class ProductController {
             .catch(next)
     }
 
+    // [GET] /product/getOneProduct
+    async getOneProduct(req, res, next) {
+        await Product.findOne({slug: req.params.slug})
+            .then(products => res.json(products))
+            .catch(next)
+    }
+
     // [POST] /product/storeProduct
     async storeProduct(req, res, next) {
         try {
@@ -85,6 +92,18 @@ class ProductController {
         }
     }
 
+    // [GET] /product/search
+    async search(req, res, next){
+        await Product.find({
+            deleted: false,
+            "$or": [
+                {title:{$regex:req.query.q}}
+            ]
+        })
+            .then(products => res.json(products))
+            .catch(next)
+    }
+
     // [POST] /product/addToCart
     async addToCart(req, res, next) {
         try {
@@ -158,18 +177,6 @@ class ProductController {
         }
     }
 
-
-    // [GET] /product/search
-    async search(req, res, next){
-        await Product.find({
-            deleted: false,
-            "$or": [
-                {title:{$regex:req.query.q}}
-            ]
-        })
-            .then(products => res.json(products))
-            .catch(next)
-    }
 }
 
 module.exports = new ProductController();
