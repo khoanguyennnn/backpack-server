@@ -4,6 +4,8 @@ import {faXmark, faSpinner, faMagnifyingGlass} from '@fortawesome/free-solid-svg
 import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
 
+import * as searchServices from '../../../services/searchServices';
+import {useDebounce} from '../../../hooks';
 import {Wrapper as PopperWrapper} from '../../../components/Popper';
 import ProductItem from '../../../components/ProductItem';
 import styles from './Search.module.scss';
@@ -16,26 +18,34 @@ function Search() {
     const [showResult, setShowResult] = useState(true)
     const [loading, setLoading] = useState(false)
 
+    const debounced = useDebounce(searchValue, 500);
+
     const inputRef = useRef()
 
     useEffect(() => {
-        if(!searchValue.trim()) {
+        if(!debounced.trim()) {
             setSearchResult([])
             return;
         }
 
-        setLoading(true)
+        
+        const fetchApi = async () => {
+            setLoading(true);
 
-        fetch(`http://localhost:3000/api/product/search?q=${encodeURIComponent(searchValue)}`)
-            .then(res => res.json())
-            .then(res => {
-                setSearchResult(res);
-                setLoading(false);
-            })
-            .catch(() => {
-                setLoading(false);
-            })
-    },[searchValue])
+            const result = await searchServices.search(debounced);
+            setSearchResult(result);
+            setLoading(false);
+        }
+
+        fetchApi();
+    },[debounced])
+
+    const handelChange = (e) => {
+        const searchValue = e.target.value
+        if(!searchValue.startsWith(' ')){
+            setSearchValue(searchValue)
+        }
+    }
 
     const handleHideResult = () => {
         setShowResult(false);
@@ -47,48 +57,58 @@ function Search() {
         inputRef.current.focus()
     }
 
+    const handleOnHideClick = () => {
+        setSearchValue('');
+        setSearchResult([]);
+        setShowResult(false);
+    };
+
     return (
         <>
-            <HeadlessTippy
-                interactive
-                visible = {showResult && searchResult.length > 0}
-                render={attrs => (
-                    <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-                        <PopperWrapper>
-                            <h4 className={cx('search-title')}>
-                                Products
-                            </h4>
-                            {searchResult.map(result => (
-                                <ProductItem key={result._id} data={result}/>
-                            ))}
-                        </PopperWrapper>
-                    </div>
-                )}
-                onClickOutside={handleHideResult}
-            >
-                <div className={cx('search')}>
-                    <input 
-                        ref={inputRef}
-                        value={searchValue}
-                        placeholder='Search'
-                        spellCheck={false}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        onFocus={() => setShowResult(true)}
-                    />
-                    {!!searchValue && !loading && (
-                        <button 
-                            className={cx('clear')} 
-                            onClick={handleClear}
-                        >
-                            <FontAwesomeIcon icon={faXmark}/>
-                        </button>
+            <div className={cx('search-wrapper')}>
+                <HeadlessTippy
+                    interactive
+                    visible = {showResult && searchResult.length > 0}
+                    render={attrs => (
+                        <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+                            <PopperWrapper>
+                                <h4 className={cx('search-title')}>
+                                    Products
+                                </h4>
+                                <div className={cx('search-body')} onClick={handleOnHideClick}>
+                                    {searchResult.map(result => (
+                                        <ProductItem key={result._id} data={result}/>
+                                    ))}
+                                </div>
+                            </PopperWrapper>
+                        </div>
                     )}
-                    {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner}/>}
-                    <button className={cx('search-btn')}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass}/>
-                    </button>
-                </div>
-            </HeadlessTippy>
+                    onClickOutside={handleHideResult}
+                >
+                    <div className={cx('search')}>
+                        <input 
+                            ref={inputRef}
+                            value={searchValue}
+                            placeholder='Search'
+                            spellCheck={false}
+                            onChange={handelChange}
+                            onFocus={() => setShowResult(true)}
+                        />
+                        {!!searchValue && !loading && (
+                            <button 
+                                className={cx('clear')} 
+                                onClick={handleClear}
+                            >
+                                <FontAwesomeIcon icon={faXmark}/>
+                            </button>
+                        )}
+                        {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner}/>}
+                        <button className={cx('search-btn')} onMouseDown={e => e.preventDefault()}>
+                            <FontAwesomeIcon icon={faMagnifyingGlass}/>
+                        </button>
+                    </div>
+                </HeadlessTippy>
+            </div>
         </>
     )
 }
