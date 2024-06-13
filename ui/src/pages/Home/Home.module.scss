@@ -1,11 +1,100 @@
-.product {
-    text-align: center;
+// HERO
+.hero {
+    display: grid;
+    padding: 20px;
+    background-color: bisque;
+    grid-template-columns: 60% 40%;
+}
 
-    h2 {
-        font-size: 5rem;
+.hero-offer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+
+    h4 {
+        padding-bottom: 20px;
+        font-size: 2.5rem;
     }
 
-    
+    h2 {
+        font-size: 6.5rem;
+    }
+
+    h1 {
+        color: rgb(78, 0, 0);
+        font-size: 8rem;
+    }
+    p {
+        padding-top: 10px;
+        padding-left: 20px;
+        color: rgb(155, 155, 155);
+    }
+    a {
+        width: 200px;
+    }
+}
+
+.shop-btn {
+    width: 200px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.banner-img {
+    width: 500px;
+    padding: 20px;
+    background-color: aliceblue;
+    border: solid 1px black;
+}
+
+.featured-title{
+    text-align:start;
+    font-size: 3rem;
+    margin-top: 84px;
+}
+
+// FEATURED
+.featured {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 33%);
+}
+
+.card-overlay {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.card-img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.card-des {
+    padding-top: 20px;
+
+    h3, p{
+        margin-left: 20px;
+    }
+    p {
+        font-size: 2rem;
+    }
+    h3 {
+        font-size: 2.4rem;
+    }
+}
+
+// PRODUCT
+.product {
+    text-align: center; 
+
+    p {
+        text-align: start;
+        font-size: 1.6rem;
+    }
 }
 
 .pro-container{
@@ -40,3 +129,4 @@
         border-radius: 12px;
     }
 }
+

@@ -2,7 +2,6 @@ require("dotenv").config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 
-
 const User = require('../models/User');
 const RefreshToken = require('../models/Refreshtoken');
 const authService = require('../../services/authenticateServices');
@@ -55,31 +54,34 @@ class UserController {
     // [POST] /user/login
     async login(req, res, next){
         if (req.body.email == "" || req.body.password == "") {
-            return res.status(400).send("You have to insert email or password");
+            return res.status(400).json({ message: "You have to insert email or password" });
         }
-        let loginUser = await User.find({email: req.body.email})
-        if(loginUser == "" || loginUser[0]["delete"] == false){
-            return res.status(404).send("User does not exist")
+        let loginUser = await User.findOne({email: req.body.email})
+        if(loginUser == null){
+            return res.status(404).json({ message: "User does not exist" })
         } else {
             try {
-                if(bcrypt.compare(req.body.password, loginUser[0]['password'] )){
-                    let user = {
-                        name: loginUser[0]["name"],
-                        email: loginUser[0]["email"],
-                        role: loginUser[0]["role"],
+                bcrypt.compare(req.body.password, loginUser.password, (err, data) => {
+                    //if both match than you can do anything
+                    if (data) {
+                        let user = {
+                            name: loginUser.name,
+                            email: loginUser.email,
+                            role: loginUser.role,
+                        }
+                        
+                        let accessToken = authService.generateAccessToken(user);
+                        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+                        let data = new RefreshToken({
+                            token: refreshToken,
+                            user: loginUser._id
+                        })
+                        data.save()
+                        return res.status(200).json({accessToken : accessToken, refreshToken: refreshToken})
+                    } else {
+                        return res.status(401).json({ message: "Wrong username or password" })
                     }
-                    
-                    let accessToken = authService.generateAccessToken(user);
-                    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
-                    let data = new RefreshToken({
-                        token: refreshToken,
-                        user: loginUser[0]["_id"]
-                    })
-                    await data.save()
-                    return res.status(200).json({accessToken : accessToken, refreshToken: refreshToken})
-                } else {
-                    return res.status(401).json({ message: "wrong username or password" });
-                }
+                })       
             } catch (error) {
                 return res.status(401).json({ message: "error when login" }); 
             }

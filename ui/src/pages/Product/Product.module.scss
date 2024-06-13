@@ -8,6 +8,37 @@
     
 }
 
+.pro-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid #eceff1;
+}
+
+.heading {
+    text-align: start;
+}
+
+.heading-title{
+    font-style: italic;
+    font-weight: 500;
+}
+
+.heading-des {
+    max-width: 1024px
+}
+
+.sort-btn {
+    align-self: end;
+}
+
+.dropdown-menu {
+    position: absolute;
+    inset: 0px auto auto 0px;
+    transform: translate(-26px, 36px);
+    font-size: 1.6rem;
+}
+
 .pro-container{
     display: grid;
     grid-template-columns: repeat(4, 25.00%);
@@ -36,4 +67,18 @@
         max-width: 215px;
         border-radius: 12px;
     }
+}
+
+.des {
+    span {
+        font-size: 1.4rem;
+        color: rgb(118, 118, 119);
+    }
+    h4 {
+        font-size: 2rem;
+    }
+}
+
+.des-price {
+    color: green;
 }

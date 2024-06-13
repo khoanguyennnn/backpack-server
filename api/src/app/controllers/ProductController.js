@@ -5,9 +5,16 @@ const Cart = require('../models/Cart')
 class ProductController {
     // [GET] /product/getProduct
     async getProduct(req, res, next) {
-        await Product.find({deleted: false})
-            .then(products => res.json(products))
-            .catch(next)
+        let productQuery = Product.find({deleted: false})
+
+        if(req.query.hasOwnProperty('_sort')){
+            productQuery = productQuery.sort({
+                [req.query.column]: req.query.type
+            })
+        }
+
+        await productQuery.then(products => res.json(products))
+                .catch(next)
     }
 
     // [GET] /product/getOneProduct

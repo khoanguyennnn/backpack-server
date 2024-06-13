@@ -3,8 +3,17 @@
     align-items: center;
     height: 200px;
     width: 100%;
-    background-color: #282c31;
+    background-color: black;
     color: rgb(211, 215, 218);
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+}
+
+.logo-img {
+    width: 55%;
 }
 
 .col {

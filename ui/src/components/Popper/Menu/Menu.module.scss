@@ -1,0 +1,28 @@
+.content {
+    width: 150px;
+}
+
+.wrapper {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+
+    &:hover {
+        background-color: bisque;
+        transition: 0.1s ease;
+    }
+}
+
+.btn {
+    width: 100%;
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
+
+.btn-title {
+    color: black;
+    font-weight: 600;
+    justify-self: start;
+}
