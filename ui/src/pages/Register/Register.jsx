@@ -1,45 +1,46 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
 import classNames from 'classnames/bind';
 
 import * as userServices from '../../services/userServices';
-import styles from './Login.module.scss';
+import styles from './Register.module.scss';
 import logo from '../../assets/logo/logo.jpg';
 import { UserContext } from '../../context/UserContext';
 
 const cx = classNames.bind(styles);
 
-function Login() {
+function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [showLoading, setShowLoading] = useState(false);
     
     const [isNotFound, setIsNotFound] = useState(false);
     const [warningLog, setWarningLog] = useState('');
 
-    const { loginContext, user } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
-    const handleLogin = async () => {
+    const navigate = useNavigate();
+
+    const handleRegister = async () => {
         setWarningLog('');
         if (!email || !password) {
             setWarningLog('Email and Password is required!')
             return;
         }
         setShowLoading(true);
-        let res = await userServices.loginApi(email, password);
-        if(res && res.data.accessToken){
-            loginContext(email, res.data.accessToken, res.data.refreshToken);
-        } else {
-            // error
-            if(res && (res.status !== 200)){
-                setWarningLog(res.data.message);
-                setIsNotFound(true);
-            }
+        let res = await userServices.registerApi(name, email, password, address);
+        if (res && res.status === 200) {
+            navigate('/login');
+        } else if ( res && res.status !== 200){
+            setIsNotFound(true);
+            setWarningLog(res.data.message)
         }
         setShowLoading(false);
     }
@@ -50,8 +51,17 @@ function Login() {
                 <Navigate to="/" replace={true}/>
             )}
             <div className={cx('content')}>
-                <div className={cx('title')}>Log in</div>
+                <div className={cx('title')}>Sign up</div>
                 <div className={cx('input-holder')}>
+                    <div className={cx('text')}>Full Name</div>
+                        <input
+                            className={cx('input-box')}
+                            type="text"
+                            placeholder="Enter your Full Name"
+                            required
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
+                        />
                     <div className={cx('text')}>Email</div>
                     <input
                         className={cx('input-box')}
@@ -65,15 +75,23 @@ function Login() {
                     <div className={cx('input-psw')}>
                         <input
                             className={cx('input-box')}
+                            type= {isShowPassword ? "text" : "password"}
                             placeholder="Enter Password"
-                            type={isShowPassword ? "text" : "password"}
                             required
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
                         />
                         <FontAwesomeIcon className={cx('eye-icon')} icon={isShowPassword === true ? faEye : faEyeSlash} onClick={() => setIsShowPassword(!isShowPassword)} />
                     </div>
-                    <p className={cx('forgot-password')}>Forgot password?</p>
+                    <div className={cx('text')}>Address</div>
+                    <input
+                        className={cx('input-box')}
+                        type="text"
+                        placeholder="Enter your Address"
+                        required
+                        value={address}
+                        onChange={(event) => setAddress(event.target.value)}
+                    />
                 </div>
                 {
                     isNotFound &&
@@ -83,12 +101,12 @@ function Login() {
                 }
                 <button
                     className={cx('btn-submit')}
-                    disabled={email && password ? false : true}
+                    disabled={email && password && name && address ? false : true}
                     type="submit"
-                    onClick={() => handleLogin()}
+                    onClick={() => handleRegister()}
                 >
                     {showLoading && <FontAwesomeIcon icon={faSpinner} spin />}
-                    &nbsp;Login
+                    &nbsp;Register
                 </button>
 
             </div>
@@ -99,4 +117,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default Register;

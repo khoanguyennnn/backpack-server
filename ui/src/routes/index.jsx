@@ -3,6 +3,8 @@ import Product from '../pages/Product';
 import Item from '../pages/Item';
 import Cart from '../pages/Cart';
 import Login from '../pages/Login';
+import Register from '../pages/Register';
+import Profile from '../pages/Profile';
 
 const publicRoutes = [
     { path: '/', component: Home},
@@ -10,6 +12,8 @@ const publicRoutes = [
     { path: '/products/:slug', component: Item},
     { path: '/cart', component: Cart},
     { path: '/login', component: Login},
+    { path: '/signup', component: Register},
+    { path: '/profile', component: Profile},
 ]
 
 const privateRoutes = [

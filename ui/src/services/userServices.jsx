@@ -22,3 +22,29 @@ export const logoutApi = async (token) => {
         return error.response;
     }
 }
+
+export const registerApi = async (name, email, password, address) => {
+    try  {
+        const res = await request.post(`user/register`, {
+            name,
+            email,
+            password,
+            address,
+            role: "user"
+        })
+        return res
+    } catch (error) {
+        return error.response;
+    }
+}
+
+export const userInfoApi = async () => {
+    var myToken = localStorage.getItem('accessToken');
+    try  {
+        const res = await request.get(`user/getUser`, { headers: { "Authorization": `Bearer ${myToken}` } })
+        return res
+    } catch (error) {
+        return error.response;
+    }
+}
+

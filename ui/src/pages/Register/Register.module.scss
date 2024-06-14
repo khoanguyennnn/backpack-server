@@ -1,0 +1,108 @@
+.wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    min-height: 90vh;
+    background-color: white;
+}
+
+.content {
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+    border-radius: 5px;
+    width: 500px;
+    color: rgb(0, 0, 0);
+}
+
+.title {
+    font-weight: 700;
+    font-size: 3rem;
+    margin-bottom: 5px;
+}
+
+.input-holder {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text{
+    font-size: 1.6rem;
+}
+
+.input-psw {
+    position: relative;
+}
+
+.input-box {
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid black;
+    border-radius: 40px;
+    padding: 20px 45px 20px 20px;
+}
+
+.eye-icon {
+    cursor: pointer;
+    color: black;
+    position: absolute;
+    padding: 20px;
+    top: 10px;
+    right: 0px;
+}
+
+.forgot-password {
+    cursor: pointer;
+    &:hover {
+        color: bisque;
+    }
+}
+
+.not-found-text{
+    font-size: 1.6rem;
+    color: red;
+}
+
+.btn-submit {
+    cursor: pointer;
+    width: 300px;
+    height: 50px;
+    border-radius: 40px;
+    color: black;
+    background-color: rgb(187, 183, 183);
+
+    &.active {
+        background-color: var(--primary);
+        color: white;
+        &:hover {
+            background-color: rgb(0, 183, 255);
+        }
+    }
+}
+
+button[disabled='disabled'],
+button:disabled {
+    cursor: not-allowed;
+}
+
+.btn-back {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    color: white;
+    padding: 10px 15px;
+    border: 1px solid white;
+    border-radius: 50%;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.241);
+    }
+}

@@ -18,7 +18,7 @@ class UserController {
     async getUser(req, res, next) {
         try {
             const token = await req.user;
-            const user = await User.find({ email: token.email });
+            const user = await User.findOne({ email: token.email });
             res.status(200).send(user);
         } catch (err) {
             return res.status(400).send("something gone wrong at getting the user");
@@ -36,15 +36,16 @@ class UserController {
                     name: req.body.name,
                     email: req.body.email,
                     password: hashPassword,
+                    address: req.body.address,
                     role: req.body.role,
                 })
                 data.save()
                     .catch((err) => {
-                        return res.status(400).json("error occured");
+                        return res.status(400).json({message: "Error occured"});
                     })
-                return res.status(200).json("register successfully")
+                return res.status(200).json({message: "Register successfully" })
             } else {
-                res.status(400).json("user name or password existed!")
+                res.status(400).json({message: "User name or password existed!"})
             }
         } catch (error) {
             res.status(400).send(err);    

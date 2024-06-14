@@ -138,16 +138,20 @@ class ProductController {
     async getCart(req, res, next) {
         try {
             const token = await req.user;
-            const user = await User.find({ email: token.email });
+            const user = await User.findOne({ email: token.email });
 
-            const cart = await Cart.find({user: user[0]["_id"]})
-
+            const cart = await Cart.find({user: user._id})
+            
             let data = []
-
+            let result = []
+            cart.map((value, index) => {
+                data.push(value.product)
+            })
+            
             for(let i = 0; i < cart.length; i++){
-                data.push(await Product.findOne({_id: cart[i]["product"]}))
+                result.push(await Product.findOne({_id: data[i]}))
             }
-            return res.status(200).send(data);
+            return res.status(200).send(result);
         } catch (err) {
             return res.status(400).send("something gone wrong at getting products");
         }
@@ -183,7 +187,6 @@ class ProductController {
             return res.status(400).send("something gone wrong at remove cart");
         }
     }
-
 }
 
 module.exports = new ProductController();

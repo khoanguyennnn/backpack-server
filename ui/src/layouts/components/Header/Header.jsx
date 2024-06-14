@@ -21,6 +21,7 @@ function Header() {
         {
             icon: <FontAwesomeIcon icon={faCircleInfo} />,
             title: 'Account',
+            to: '/profile'
         },
         {
             icon: <FontAwesomeIcon icon={faRightFromBracket} />,

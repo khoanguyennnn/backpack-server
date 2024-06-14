@@ -4,8 +4,8 @@ const request = axios.create({
     baseURL: 'http://localhost:3000/api/'
 })
 
-export const get = async (path, options = {}) => {
-    const response = await request.get(path, options);
+export const get = async (path, options = {}, config = {}) => {
+    const response = await request.get(path, options, config);
     return response.data;
 }
 
