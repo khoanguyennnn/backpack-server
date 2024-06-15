@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faTruckFast, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
 
 import * as productServices from '../../services/productServices';
+import * as cartServices from '../../services/cartServices';
 import classNames from 'classnames/bind';
 import styles from './Item.module.scss';
 
@@ -25,6 +26,11 @@ function Item() {
         fetchApi();
     }, [params.slug]);
 
+    const handleAddCart = async (id) => {
+        const res = await cartServices.addToCart(id);
+        console.log(res);
+    }
+
     return (
         <>
             <div className={cx('product')}>
@@ -39,7 +45,7 @@ function Item() {
                         <span className={cx('tag')}>Original</span>
                         <h4 className={cx('product-title')}>{product.title}</h4>
                         <h4 className={cx('product-price')}>${product.price}</h4>
-                        <button className={cx('add-to-cart-btn')}>
+                        <button className={cx('add-to-cart-btn')} onClick={() => {handleAddCart(product._id)}}>
                             Add to Bag 
                             <FontAwesomeIcon className={cx('cart-icon')} icon={faCartShopping}/>
                         </button>

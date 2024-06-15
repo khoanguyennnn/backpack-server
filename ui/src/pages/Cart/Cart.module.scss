@@ -43,6 +43,7 @@
 .product-image {
     height: 100%;
     object-fit: cover;
+    cursor: pointer;
 }
 
 .image {
@@ -72,6 +73,7 @@
 .close-btn {
     font-size: 2rem;
     padding: 0 10px;
+    cursor: pointer;
 }
 
 .card-right {

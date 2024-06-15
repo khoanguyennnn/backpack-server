@@ -14,7 +14,7 @@ router.delete('/delete', authService.authenticateToken, productController.destro
 router.delete('/forceDestroy', authService.authenticateToken, productController.forceDestroy);
 router.patch('/restore', authService.authenticateToken, productController.restore);
 
-
+router.post('/subtractCart', authService.authenticateToken, productController.subtractCart)
 router.post('/addToCart', authService.authenticateToken, productController.addToCart);
 router.delete('/removeAllCart', authService.authenticateToken, productController.removeAllCart);
 router.delete('/removeCart', authService.authenticateToken, productController.removeCart);

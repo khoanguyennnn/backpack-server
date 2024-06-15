@@ -115,20 +115,25 @@ class ProductController {
     async addToCart(req, res, next) {
         try {
             const token = await req.user;
-            const user = await User.find({ email: token.email });
+            const user = await User.findOne({ email: token.email });
 
-            let data = new Cart({
+            const product = await Cart.findOne({ product: req.body._id, user: user._id});
+
+            let quantity = 1
+            if( !product ) {
+                let data = new Cart({
                 product: req.body._id,
-                user: user[0]["_id"]
-            })
-
-            data.save()
-                .catch((err) => {
-                    return res.status(400).json("error occured");
+                user: user._id,
+                quantity: quantity,
                 })
-                .then(() => {
-                    return res.status(200).json("add to cart successfully")
-                });
+                data.save()
+                return res.status(200).json({message: "Add to Cart successfully"})
+            } else {
+                quantity = product.quantity + 1;
+                await Cart.updateOne({ product: req.body._id, user: user._id }, {quantity : quantity })
+                return res.status(200).json({message: "Add to Cart successfully"})
+            }
+
         } catch (err) {
             return res.status(400).send("something gone wrong at getting the user");
         }
@@ -139,21 +144,48 @@ class ProductController {
         try {
             const token = await req.user;
             const user = await User.findOne({ email: token.email });
+            const products = await Product.find({deleted: false})
 
             const cart = await Cart.find({user: user._id})
             
-            let data = []
-            let result = []
-            cart.map((value, index) => {
-                data.push(value.product)
+            const newCart = cart.map(value => {
+                const id = value.product;
+                const data = products.filter(product => product._id == id.toString())
+
+                return {
+                    product: data[0],
+                    quantity: value.quantity
+                }
             })
             
-            for(let i = 0; i < cart.length; i++){
-                result.push(await Product.findOne({_id: data[i]}))
-            }
-            return res.status(200).send(result);
+            return res.status(200).send(newCart);
         } catch (err) {
             return res.status(400).send("something gone wrong at getting products");
+        }
+    }
+
+    // [PATCH] /product/subtractCart
+    async subtractCart(req, res, next) {
+        try {
+            const token = await req.user;
+            const user = await User.findOne({ email: token.email });
+
+            const product = await Cart.findOne({ product: req.body._id, user: user._id});
+            if (product.quantity <= 1) {
+                await Cart.deleteOne({
+                    user: product.user,
+                    product: product.product,
+                    quantity: product.quantity
+                })
+                    .then(() => res.status(200).json({message: "Delete product from cart successfully"}))
+                    .catch((err) => res.status(400).json({message: err}))
+            } else if (product.quantity > 1){
+                await Cart.updateOne({ product: product.product, user: product.user}, { quantity: product.quantity - 1 })
+                    .then(() => res.status(200).json({message: "Subtract product from cart successfully"}))
+                    .catch((err) => res.status(400).json({message: err}))
+            }
+        } catch (error) {
+            return res.status(400).send("something gone wrong at subtract quantity");
         }
     }
 
