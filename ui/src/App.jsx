@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.scss';
 import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { publicRoutes } from './routes';
 import { DefaultLayout } from './layouts';
@@ -27,6 +28,18 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   )
 }

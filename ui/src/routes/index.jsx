@@ -5,6 +5,7 @@ import Cart from '../pages/Cart';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Profile from '../pages/Profile';
+import Dashboard from '../pages/Dashboard';
 
 const publicRoutes = [
     { path: '/', component: Home},
@@ -14,6 +15,7 @@ const publicRoutes = [
     { path: '/login', component: Login},
     { path: '/signup', component: Register},
     { path: '/profile', component: Profile},
+    { path: '/dashboard', component: Dashboard},
 ]
 
 const privateRoutes = [

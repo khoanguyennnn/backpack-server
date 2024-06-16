@@ -36,7 +36,7 @@ class ProductController {
                     return res.status(400).json("error occured");
                 })
                 .then(() => {
-                    return res.status(200).json("data is saved")
+                    return res.status(200).json({message: "data is saved", data})
                 });
         } catch (error) {
             return res.status(400).send("error occured!");
@@ -49,8 +49,9 @@ class ProductController {
             const token = await req.user;
             const user = await User.find({ email: token.email });
             if(user[0]["role"] !== "admin") return res.status(403).json("you don't have permission!")
-            Product.updateOne({ _id: req.body._id }, req.body)
-                .then(() => res.status(200).json("updated successfully!"))
+            let data = req.body
+            await Product.updateOne({ _id: req.body._id }, data)
+                .then(() => res.status(200).json({message: "Data is updated successfully", data}))
                 .catch((err) => res.status(400).json("error occured"))  
         } catch (error) {
             return res.status(400).send("error occured!");

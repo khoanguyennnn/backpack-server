@@ -24,4 +24,9 @@ export const patch = async (path, options = {}, config) => {
     return response.data;
 }
 
+export const put = async (path, options = {}, config) => {
+    const response = await request.put(path, options, config);
+    return response
+}
+
 export default request;
