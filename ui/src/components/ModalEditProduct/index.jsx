@@ -11,6 +11,7 @@ function ModalEditProduct(props) {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
+    const [file, setFile] = useState([]);
 
     useEffect(() => {
         if(show) {
@@ -22,7 +23,14 @@ function ModalEditProduct(props) {
     }, [dataProductEdit])
 
     const handleSaveProduct = async () => {
-        let res = await productServices.updateProduct(id, title, price, description);
+        let formdata = new FormData();
+        formdata.append('_id', id)
+        formdata.append('title', title)
+        formdata.append('price', price)
+        formdata.append('description', description)
+        formdata.append('image', file)
+
+        let res = await productServices.updateProduct(formdata);
         if (res && res.status === 200) {
             //success
             handleClose();
@@ -78,7 +86,7 @@ function ModalEditProduct(props) {
 
                         <Form.Group className="mb-3">
                             <Form.Label>Product Image</Form.Label>
-                            <Form.Control type="file" />
+                            <Form.Control type="file" onChange={(e) => setFile(e.target.files[0])} />
                         </Form.Group>
 
                     </Form>

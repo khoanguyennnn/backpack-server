@@ -6,6 +6,7 @@ import * as cartServices from '../../services/cartServices';
 import styles from './Cart.module.scss';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { baseImageURL } from '../../routes';
 
 const cx = classNames.bind(styles)
 
@@ -62,7 +63,7 @@ function Cart() {
     return (
         <>
             <div className={cx('wrapper')}>
-                {products?.length === 0 ? (
+                {!products || products?.length === 0 ? (
                     <>
                         <div>
                             <h3>YOUR BAG IS EMPTY</h3>
@@ -76,44 +77,44 @@ function Cart() {
                                 <div className={cx('left-box')}>
                                     <div className={cx('title-box')}>
                                         <h1>Shoppping Cart</h1>
-                                        <h3>{products.length} items</h3>
+                                        <h3>{products?.length} items</h3>
                                     </div>
-                                    {products.map((product, index) => (
-                                        <div key={index}>
-                                            <hr/>
-                                            <div className={cx('cart-box')}>
-                                                <div className={cx('product-image')} onClick={() => {handleClickItemImage(product.product.slug)}}>
-                                                    <img 
-                                                        className={cx('image')} 
-                                                        src={product.product.image} 
-                                                        alt={product.product.title}
-                                                    />
-                                                </div>
-                                                <div className={cx('product-name')}>
-                                                    <h3>Original</h3>
-                                                    <h3>{product.product.title}</h3>
-                                                </div>
-                                                <div className={cx('product-quantity')}>
-                                                    <button className={cx('quantity-btn')} onClick={() => {handleClickMinusBtn(product.product._id)}}>
-                                                        <FontAwesomeIcon icon={faMinus}/>
-                                                    </button>
-                                                    <input className={cx('quantity-input')} readOnly type="number" value={product.quantity}/>
-                                                    <button className={cx('quantity-btn')} onClick={() => {handleClickPlusBtn(product.product._id)}}>
-                                                        <FontAwesomeIcon icon={faPlus}/>   
-                                                    </button>
-                                                </div>
-                                                <div className={cx('product-price')}>
-                                                    <h3>$ {(product.product.price * product.quantity).toFixed(2)}</h3>
-                                                </div>
-                                                <div 
-                                                    className={cx('close-btn')} 
-                                                    onClick={() => {removeCart(product.product._id)}}
-                                                >
-                                                    <FontAwesomeIcon icon={faX}/>
-                                                </div>
+                                        {products.map((product, index) => (
+                                            <div key={index}>
+                                                    <hr/>
+                                                    <div className={cx('cart-box')}>
+                                                        <div className={cx('product-image')} onClick={() => {handleClickItemImage(product.product.slug)}}>
+                                                            <img 
+                                                                className={cx('image')} 
+                                                                src={baseImageURL+product.product.image} 
+                                                                alt={product.product.title}
+                                                            />
+                                                        </div>
+                                                        <div className={cx('product-name')}>
+                                                            <h3>Original</h3>
+                                                            <h3>{product.product?.title}</h3>
+                                                        </div>
+                                                        <div className={cx('product-quantity')}>
+                                                            <button className={cx('quantity-btn')} onClick={() => {handleClickMinusBtn(product.product._id)}}>
+                                                                <FontAwesomeIcon icon={faMinus}/>
+                                                            </button>
+                                                            <input className={cx('quantity-input')} readOnly type="number" value={product.quantity}/>
+                                                            <button className={cx('quantity-btn')} onClick={() => {handleClickPlusBtn(product.product._id)}}>
+                                                                <FontAwesomeIcon icon={faPlus}/>   
+                                                            </button>
+                                                        </div>
+                                                        <div className={cx('product-price')}>
+                                                            <h3>$ {(product.product?.price * product.quantity).toFixed(2)}</h3>
+                                                        </div>
+                                                        <div 
+                                                            className={cx('close-btn')} 
+                                                            onClick={() => {removeCart(product.product._id)}}
+                                                        >
+                                                            <FontAwesomeIcon icon={faX}/>
+                                                        </div>
+                                                    </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}                        
                                 </div>
                             </div>
                             <div className={cx('card-right')}>

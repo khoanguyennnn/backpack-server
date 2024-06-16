@@ -22,4 +22,6 @@ const privateRoutes = [
 
 ]
 
-export {publicRoutes, privateRoutes}
+const baseImageURL = "http://localhost:3000/Images/"
+
+export {publicRoutes, privateRoutes, baseImageURL}

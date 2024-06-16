@@ -6,16 +6,23 @@ import _ from 'lodash';
 import * as productServices from '../../services/productServices';
 import ModalAddProduct from '../../components/ModalAddProduct';
 import ModalEditProduct from '../../components/ModalEditProduct';
+import ModalDeleteProduct from '../../components/ModalDeleteProduct';
 import styles from './Dashboard.module.scss';
 import { useEffect, useState } from 'react';
+import { baseImageURL } from '../../routes';
 
 const cx = classNames.bind(styles);
 
 function Dashboard () {
     const [products, setProducts] = useState([]);
     const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
+
     const [isShowModalEdit, setIsShowModalEdit] = useState(false);
     const [dataProductEdit, setDataProductEdit] = useState({})
+
+    const [isShowModalDelete, setIsShowModalDelete] = useState(false);
+    const [dataProductDelete, setDataProductDelete] = useState({})
+
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -32,15 +39,34 @@ function Dashboard () {
     };
 
     const handleUpdateTable = (data) => {
+        console.log(data);
         let cloneProducts = _.cloneDeep(products)
         let index = products.findIndex(product => product._id === data._id)
+        console.log(index);
         cloneProducts[index] = data;
+        setProducts(cloneProducts)
+    }
+
+    const handleRemoveFromModal = (data) => {
+        let cloneProducts = _.cloneDeep(products)
+        cloneProducts = cloneProducts.filter(item => item._id !== data._id)
         setProducts(cloneProducts)
     }
 
     const handleEditTable = (product) => {
         setDataProductEdit(product)
         setIsShowModalEdit(true)
+    }
+
+    const handleDeleteTable = (product) => {
+        setIsShowModalDelete(true)
+        setDataProductDelete(product)
+    } 
+
+    const handleClose = () => {
+        setIsShowModalAddNew(false)
+        setIsShowModalEdit(false)
+        setIsShowModalDelete(false)
     }
 
     return (
@@ -71,12 +97,12 @@ function Dashboard () {
                                             <td>{product.title}</td>
                                             <td>{product.price}</td>
                                             <td>
-                                                <img className={cx('product-image')} src={product.image} alt="" />
+                                                <img className={cx('product-image')} src={baseImageURL+product.image} alt="" />
                                             </td>
                                             <td>{product.description}</td>
                                             <td>
                                                 <Button variant="warning" onClick={() => {handleEditTable(product)}}>Edit</Button>
-                                                <Button variant="danger">Delete</Button>
+                                                <Button variant="danger" onClick={() => {handleDeleteTable(product)}}>Delete</Button>
                                             </td>
                                         </tr>
                                     )
@@ -87,14 +113,20 @@ function Dashboard () {
             </div>
             <ModalAddProduct
                 show = {isShowModalAddNew}
-                handleClose = {() => {setIsShowModalAddNew(false)}}
+                handleClose = {handleClose}
                 onSubmit = {getData}
             />
             <ModalEditProduct
                 show = {isShowModalEdit}
-                handleClose = {() => {setIsShowModalEdit(false)}}
+                handleClose = {handleClose}
                 dataProductEdit= {dataProductEdit}
                 handleUpdateTable = {handleUpdateTable}
+            />
+            <ModalDeleteProduct
+                show = {isShowModalDelete}
+                handleClose = {handleClose}
+                dataProductDelete = {dataProductDelete}
+                handleRemoveFromModal = {handleRemoveFromModal}
             />
         </>
     )

@@ -1,6 +1,7 @@
 const Product = require('../models/Product');
 const User = require('../models/User')
 const Cart = require('../models/Cart')
+const fs = require('fs');
 
 class ProductController {
     // [GET] /product/getProduct
@@ -30,7 +31,14 @@ class ProductController {
             const token = await req.user;
             const user = await User.find({ email: token.email });
             if(user[0]["role"] !== "admin") return res.status(403).json("you don't have permission!")
-            let data = new Product(req.body)
+            let data = new Product({
+                title: req.body.title,
+                price: req.body.price,
+                description: req.body.description,
+            })
+            if(req.file) {
+                data.image = req.file.filename;
+            }
             data.save()
                 .catch((err) => {
                     return res.status(400).json("error occured");
@@ -49,7 +57,15 @@ class ProductController {
             const token = await req.user;
             const user = await User.find({ email: token.email });
             if(user[0]["role"] !== "admin") return res.status(403).json("you don't have permission!")
-            let data = req.body
+            let data = {
+                _id: req.body._id,
+                title: req.body.title,
+                price: req.body.price,
+                description: req.body.description,
+            }
+            if(req.file) {
+                data.image = req.file.filename;
+            }
             await Product.updateOne({ _id: req.body._id }, data)
                 .then(() => res.status(200).json({message: "Data is updated successfully", data}))
                 .catch((err) => res.status(400).json("error occured"))  

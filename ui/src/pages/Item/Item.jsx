@@ -7,6 +7,7 @@ import * as productServices from '../../services/productServices';
 import * as cartServices from '../../services/cartServices';
 import classNames from 'classnames/bind';
 import styles from './Item.module.scss';
+import { baseImageURL } from '../../routes';
 
 const cx = classNames.bind(styles)
 
@@ -38,7 +39,7 @@ function Item() {
                 <div className={cx('pro-container')}>
                     <div className={cx('grid-left')}>
                         <div className={cx('grid-container')}>
-                            <img className={cx('image')} src={product.image} alt="" />
+                            <img className={cx('image')} src={baseImageURL+product.image} alt="" />
                         </div>
                     </div>
                     <div className={cx('grid-right')}>
@@ -65,7 +66,7 @@ function Item() {
                 <div className={cx('other-container')}>
                     {otherProduct.map((result) => (
                         <NavLink className={cx('pro')} to={`/products/${result.slug}`} key={result._id}>
-                            <img src={result.image} alt="" />
+                            <img src={baseImageURL+result.image} alt="" />
                             <div className={cx('des')}>
                                 <span>Original</span>
                                 <h4>{result.title}</h4>

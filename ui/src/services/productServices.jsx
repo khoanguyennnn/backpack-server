@@ -33,22 +33,12 @@ export const sortProduct = async (sort,column, type) => {
     }
 }
 
-export const storeProduct = async (title, price, description) => {
+export const storeProduct = async (formData) => {
     var myToken = localStorage.getItem('accessToken');
     try {
-        const res = await request.post(`product/storeProduct`, {
-            title,
-            price,
-            description,
-            category: "men's clothing",
-            rating: {
-                rate: 3.9,
-                count: 120
-            },
-            image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
-        }, {
+        const res = await request.post(`product/storeProduct`, formData , {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': "multipart/form-data",
                 'Authorization': `Bearer ${myToken}` 
             }
         });
@@ -58,24 +48,35 @@ export const storeProduct = async (title, price, description) => {
     }
 }
 
-export const updateProduct = async (_id, title, price, description) => {
+export const updateProduct = async (formData) => {
     var myToken = localStorage.getItem('accessToken');
     try {
-        const res = await request.put(`product/editProduct`, {
-            _id,
-            title,
-            price,
-            description,
-            category: "men's clothing",
-            image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
-        }, {
+        const res = await request.put(`product/editProduct`, formData, {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': "multipart/form-data",
                 'Authorization': `Bearer ${myToken}` 
             }
         });
         return res;
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const deleteProduct = async (id) => {
+    var myToken = localStorage.getItem('accessToken');
+    try {
+        const res = await request.del(`product/delete`,{
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${myToken}` 
+            },
+            data: {
+                _id: id
+            }
+          });
+        return res;
+    } catch (error) {
+        return error.response;
     }
 }

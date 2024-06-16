@@ -8,6 +8,7 @@ import { faArrowUpAZ, faArrowDownAZ, faArrowUp19, faArrowDown19 } from '@fortawe
 import * as productServices from '../../services/productServices';
 import classNames from 'classnames/bind';
 import styles from './Product.module.scss';
+import { baseImageURL } from '../../routes';
 
 const cx = classNames.bind(styles)
 
@@ -65,7 +66,7 @@ function Product() {
                 <div className={cx('pro-container')}>
                     {product.map((result) => (
                         <NavLink className={cx('pro')} to={`/products/${result.slug}`} key={result._id}>
-                            <img src={result.image} alt="" />
+                            <img src={baseImageURL+result.image} alt="" />
                             <div className={cx('des')}>
                                 <span>Original</span>
                                 <h4>{result.title}</h4>

@@ -11,10 +11,6 @@ const Product = new mongoose.Schema(
         description: String,
         category: String,
         image: String,
-        rating: {
-            rate: Number,
-            count: Number
-        },
         slug: { type: String, slug: 'title' },
     },
     {

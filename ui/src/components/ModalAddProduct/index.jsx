@@ -7,12 +7,20 @@ import * as productServices from '../../services/productServices';
 function ModalAddProduct(props) {
     const {handleClose, show, onSubmit} = props
 
+    const [file, setFile] = useState([]);
+
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
 
     const handleSaveProduct = async () => {
-        let res = await productServices.storeProduct(title, price, description);
+        let formdata = new FormData();
+        formdata.append('title', title)
+        formdata.append('price', price)
+        formdata.append('description', description)
+        formdata.append('image', file)
+
+        let res = await productServices.storeProduct(formdata);
         if (res && res.status === 200) {
             //success
             onSubmit(res);
@@ -25,6 +33,10 @@ function ModalAddProduct(props) {
             toast.error("Product cannot be saved!")
         }
     }
+
+    const getFile = (e) => {
+        setFile(e.target.files[0]);
+    };
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -68,7 +80,7 @@ function ModalAddProduct(props) {
 
                         <Form.Group className="mb-3">
                             <Form.Label>Product Image</Form.Label>
-                            <Form.Control type="file" />
+                            <Form.Control type="file" onChange={e => getFile(e)} />
                         </Form.Group>
 
                     </Form>

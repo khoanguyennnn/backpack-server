@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 
@@ -9,8 +10,14 @@ const route = require('./routes');
 const SortMiddleware = require('./app/middlewares/SortMiddleware');
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+// app.use(express.json());
+// app.use(express.urlencoded({extended: false}));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
+app.use(express.static('public'))
 
 //Custom Middleware
 app.use(SortMiddleware);
