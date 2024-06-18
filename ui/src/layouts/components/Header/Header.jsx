@@ -2,8 +2,8 @@ import classNames from 'classnames/bind';
 import 'tippy.js/dist/tippy.css';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faUser, faRightToBracket, faUserPlus, faRightFromBracket, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { useContext } from 'react';
+import { faCartShopping, faUser, faRightToBracket, faUserPlus, faRightFromBracket, faCircleInfo, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as userServices from '../../../services/userServices';
@@ -17,11 +17,18 @@ const cx = classNames.bind(styles)
 
 
 function Header() {
+    const [isAdmin, setIsAdmin] = useState(false);
+
     const MENU_ITEMS_LOGIN = [
         {
             icon: <FontAwesomeIcon icon={faCircleInfo} />,
             title: 'Account',
             to: '/profile'
+        },
+        {
+            icon: <FontAwesomeIcon icon={faClockRotateLeft}/>,
+            title: 'History',
+            to: '/history'
         },
         {
             icon: <FontAwesomeIcon icon={faRightFromBracket} />,
@@ -43,7 +50,7 @@ function Header() {
             icon: <FontAwesomeIcon icon={faUserPlus} />,
             title: 'Sign up',
             to: '/signup'
-        }
+        },
     ]
 
     const { logout, user } = useContext(UserContext);
@@ -55,6 +62,18 @@ function Header() {
             navigate('/');
         } 
     }
+
+    useEffect(() => {
+        const userInfo = async () => {
+            let res = await userServices.userInfoApi(); 
+            if(res && res.role === "admin") {
+                setIsAdmin(true);
+            } else {
+                setIsAdmin(false);
+            }
+        }
+        userInfo()
+    }, [user.auth])
 
     return (
         <>
@@ -70,15 +89,15 @@ function Header() {
                         <Link to={`/products`}>
                             <div className={cx('navigation')}>Shop</div>
                         </Link>
-                        <Link to={`/blog`}>
-                            <div className={cx('navigation')}>Blog</div>
-                        </Link>
                         <Link to={`/about`}>
                             <div className={cx('navigation')}>About</div>
                         </Link>
-                        <Link to={`/contact`}>
-                            <div className={cx('navigation')}>Contact</div>
-                        </Link>
+                        {
+                            isAdmin && 
+                            <Link to={`/dashboard`}>
+                                <div className={cx('navigation')}>Dashboard (admin)</div>
+                            </Link> 
+                        }
                     </div>
                     <div className={cx('actions2')}>
                         <Menu 

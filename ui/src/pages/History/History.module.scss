@@ -1,0 +1,50 @@
+.wrapper {
+    margin: 20px 0;
+}
+
+table {
+    width: 60%;
+}
+
+.image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.order-wrapper{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    + .order-wrapper {
+        margin: 20px 0;
+    }
+}
+
+.order-table {
+    width: 70%;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+.order-info {
+    margin: 10px 0;
+}
+
+.order-detail {
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-info {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.product-price {
+    align-self: center;
+}
+

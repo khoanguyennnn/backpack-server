@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import _ from 'lodash';
 
 import * as productServices from '../../services/productServices';
+import * as userServices from '../../services/userServices';
 import ModalAddProduct from '../../components/ModalAddProduct';
 import ModalEditProduct from '../../components/ModalEditProduct';
 import ModalDeleteProduct from '../../components/ModalDeleteProduct';
@@ -23,12 +24,24 @@ function Dashboard () {
     const [isShowModalDelete, setIsShowModalDelete] = useState(false);
     const [dataProductDelete, setDataProductDelete] = useState({})
 
+    const [isAdmin, setIsAdmin] = useState(false);
+
 
     useEffect(() => {
         const fetchApi = async () => {
             const res = await productServices.getProduct();
             setProducts(res);
         }
+        const userInfo = async () => {
+            let res = await userServices.userInfoApi(); 
+            if(res && res.role === "admin") {
+                setIsAdmin(true);
+            } else {
+                setIsAdmin(false);
+            }
+        }
+        userInfo()
+
         fetchApi();
     }, [])
 
@@ -72,44 +85,50 @@ function Dashboard () {
     return (
         <>
             <div className={cx('wrapper')}>
-                <div className={cx('content')}>
-                    <div className={cx('title')}>
-                        <h2>Product Managing</h2>
-                        <Button variant="dark" onClick={() => {setIsShowModalAddNew(true)}}>Add new Product</Button>
+                {isAdmin ?   
+                    <div className={cx('content')}>
+                        <div className={cx('title')}>
+                            <h2>Product Managing</h2>
+                            <Button variant="dark" onClick={() => {setIsShowModalAddNew(true)}}>Add new Product</Button>
+                        </div>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Price</th>
+                                <th>Image</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products && products.length > 0 &&
+                                    products.map((product, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{product.title}</td>
+                                                <td>{product.price}</td>
+                                                <td>
+                                                    <img className={cx('product-image')} src={baseImageURL+product.image} alt="" />
+                                                </td>
+                                                <td className={cx('description')}>{product.description}</td>
+                                                <td>
+                                                    <Button variant="warning" onClick={() => {handleEditTable(product)}}>Edit</Button>
+                                                    <Button variant="danger" onClick={() => {handleDeleteTable(product)}}>Delete</Button>
+                                                </td>
+                                            </tr>
+                                        )
+                                })}
+                            </tbody>
+                        </Table>
                     </div>
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                            <th>#</th>
-                            <th>Title</th>
-                            <th>Price</th>
-                            <th>Image</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products && products.length > 0 &&
-                                products.map((product, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td>{product.title}</td>
-                                            <td>{product.price}</td>
-                                            <td>
-                                                <img className={cx('product-image')} src={baseImageURL+product.image} alt="" />
-                                            </td>
-                                            <td>{product.description}</td>
-                                            <td>
-                                                <Button variant="warning" onClick={() => {handleEditTable(product)}}>Edit</Button>
-                                                <Button variant="danger" onClick={() => {handleDeleteTable(product)}}>Delete</Button>
-                                            </td>
-                                        </tr>
-                                    )
-                            })}
-                        </tbody>
-                    </Table>
-                </div>
+                    :
+                    <div>
+                        You don't have permission to do this
+                    </div>
+                }
             </div>
             <ModalAddProduct
                 show = {isShowModalAddNew}

@@ -61,3 +61,18 @@ export const subtractCart = async (id) => {
         return error.response;
     }
 }
+
+export const emptyCart = async () => {
+    var myToken = localStorage.getItem('accessToken');
+    try {
+        const res = await request.del(`product/removeAllCart`,{
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${myToken}` 
+            }
+          });
+        return res;
+    } catch (error) {
+        return error.response;
+    }
+}

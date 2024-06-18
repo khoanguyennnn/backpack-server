@@ -3,10 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus, faX } from '@fortawesome/free-solid-svg-icons';
 
 import * as cartServices from '../../services/cartServices';
+import * as orderServices from '../../services/orderServices';
 import styles from './Cart.module.scss';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { baseImageURL } from '../../routes';
+import { UserContext } from '../../context/UserContext';
+import { Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles)
 
@@ -14,6 +18,8 @@ function Cart() {
     const [products, setProducts] = useState([]);
     const [reRender, setReRender] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
+
+    const { user } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -60,15 +66,34 @@ function Cart() {
         setReRender(!reRender);
     }
 
+    const handleClickPlaceOrder = async () => {
+        let res = await orderServices.placeOrder()
+        if(res && res.status === 200) {
+            await cartServices.emptyCart()
+            setReRender(!reRender);
+            toast.success(res.data.message);
+        } else {
+            toast.error('Cannot Place Order')
+        }
+    }
+
     return (
         <>
             <div className={cx('wrapper')}>
                 {!products || products?.length === 0 ? (
                     <>
-                        <div>
-                            <h3>YOUR BAG IS EMPTY</h3>
-                            <p>Once you add something to your bag - it will appear here. Ready to get started?</p>
-                        </div>
+                        {user && user.auth ? 
+                            <div>
+                                <h3>YOUR BAG IS EMPTY</h3>
+                                <p>Once you add something to your bag - it will appear here. Ready to get started?</p>
+                            </div>
+                        :
+                            <div>
+                                <h3>PLEASE LOGIN TO ADD SOMETHING TO YOUR BAG</h3>
+                                <p>Once you add something to your bag - it will appear here. Ready to get started?</p>
+                                <Button variant="dark" onClick={() => {navigate(`/login`)}}>Login</Button>
+                            </div>
+                        }
                     </>
                 ) : (
                     <div className={cx('content')}>
@@ -140,7 +165,7 @@ function Cart() {
                                         <h2>$ {totalPrice}</h2>
                                     </div>
                                     <div className={cx('order-btn')}>
-                                        <button>Place order</button>
+                                        <button onClick={() => {handleClickPlaceOrder()}}>Place order</button>
                                     </div>
                                 </div>
                             </div>
