@@ -11,6 +11,7 @@ import ModalDeleteProduct from '../../components/ModalDeleteProduct';
 import styles from './Dashboard.module.scss';
 import { useEffect, useState } from 'react';
 import { baseImageURL } from '../../routes';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -88,8 +89,13 @@ function Dashboard () {
                 {isAdmin ?   
                     <div className={cx('content')}>
                         <div className={cx('title')}>
-                            <h2>Product Managing</h2>
-                            <Button variant="dark" onClick={() => {setIsShowModalAddNew(true)}}>Add new Product</Button>
+                            <div>
+                                <h2>Product Managing</h2>
+                                <Link to={`/ordering`}>
+                                    <Button variant="dark">Ordering List</Button>
+                                </Link>
+                            </div>
+                            <Button variant="secondary" onClick={() => {setIsShowModalAddNew(true)}}>Add new Product</Button>
                         </div>
                         <Table striped bordered hover>
                             <thead>

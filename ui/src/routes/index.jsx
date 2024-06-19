@@ -8,6 +8,7 @@ import Profile from '../pages/Profile';
 import Dashboard from '../pages/Dashboard';
 import About from '../pages/About';
 import History from '../pages/History';
+import Ordering from '../pages/Ordering';
 
 const publicRoutes = [
     { path: '/', component: Home},
@@ -24,6 +25,7 @@ const privateRoutes = [
     { path: '/cart', component: Cart},
     { path: '/profile', component: Profile},
     { path: '/history', component: History},
+    { path: '/ordering', component: Ordering},
 ]
 
 const baseImageURL = "http://localhost:3000/Images/"

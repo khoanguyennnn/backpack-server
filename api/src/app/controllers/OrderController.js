@@ -48,6 +48,7 @@ class OrderController {
             }
         }
 
+        // [GET] /order/getAllOrder
         async getAllOrder(req, res, next){
             try {
                 const token = await req.user;
@@ -57,37 +58,85 @@ class OrderController {
 
                 const order = await Order.find({ user: user._id})
 
-                let test = order.map((values) => {
-                    let newtest = values.products.map((value) => {
+                let data = order.map((values) => {
+                    let product = values.products.map((value) => {
                         const id = value.product;
                         const data = products.filter(product => product._id == id.toString())
                         return {
                             product: data[0],
+                            quantity: value.quantity
                         }
                     })
 
                     return {
                         _id: values._id,
-                        products: newtest,
+                        products: product,
                         user: user._id,
-                        status: "Shipping",
+                        status: values.status,
                         totalPrice: values.totalPrice,
-                        createdAt: values.createdAt
+                        createdAt: values.createdAt,
                     };
                 })
 
-                // let listProduct = order[0].products.map((value) => {
-                //     const id = value.product;
-                //     const data = products.filter(product => product._id == id.toString())
-                //     return {
-                //         product: data[0],
-                //         quantity: value.quantity
-                //     }
-                // })
+                return res.json(data)
 
-                // var totalPrice = listProduct.reduce((partialSum, a) => partialSum + a.quantity*a.product.price, 0)
+            } catch (error) {
+                return res.status(400).send("error occured!");
+            }
+        }
 
-                return res.json(test)
+        // [GET] /order/getLogOrder
+        async getLogOrder(req, res, next){
+            try {
+                const token = await req.user;
+                const user = await User.findOne({ email: token.email });
+                if(user.role !== "admin") return res.status(403).json("you don't have permission!")
+
+                const products = await Product.find({deleted: false})
+
+                const order = await Order.find({})
+
+                const listUser = await User.find({})
+
+                let data = order.map((values) => {
+                    let product = values.products.map((value) => {
+                        const id = value.product;
+                        const data = products.filter(product => product._id == id.toString())
+                        return {
+                            product: data[0],
+                            quantity: value.quantity
+                        }
+                    })
+                    
+                    let orderUser = listUser.filter(user => user._id == values.user.toString())[0]
+                    return {
+                        _id: values._id,
+                        products: product,
+                        user: orderUser,
+                        status: values.status,
+                        totalPrice: values.totalPrice,
+                        createdAt: values.createdAt,
+                        updatedAt: values.updatedAt,
+                    };
+                })
+
+                return res.json(data)
+
+            } catch (error) {
+                return res.status(400).send("error occured!");
+            }
+        }
+
+        // [PUT] /order/editStatus
+        async editStatus(req, res, next){
+            try {
+                const token = await req.user;
+                const user = await User.findOne({ email: token.email });
+                if(user.role !== "admin") return res.status(403).json("you don't have permission!")
+
+                await Order.updateOne({ _id: req.body._id }, {status: "Delivery Successful"})
+                    .then(() => res.status(200).json({message: "Data is updated successfully"}))
+                    .catch((err) => res.status(400).json("error occured"))  
 
             } catch (error) {
                 return res.status(400).send("error occured!");
