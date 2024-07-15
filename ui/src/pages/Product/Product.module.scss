@@ -1,3 +1,5 @@
+@import '../../components/sass/Abstract/mixin';
+
 .product {
     text-align: center;
 
@@ -30,6 +32,9 @@
 
 .sort-btn {
     align-self: end;
+    button {
+        font-size: 1.6rem;
+    }
 }
 
 .dropdown-menu {
@@ -41,13 +46,21 @@
 
 .pro-container{
     display: grid;
-    grid-template-columns: repeat(4, 25.00%);
+    grid-template-columns: repeat(4, 1fr);
     justify-content: space-around;
     // flex-wrap: wrap;
     margin: 20px 0;
+
+    @include respond(tab-port){
+        grid-template-columns: repeat(3, 1fr);
+    }
+    @include respond(phone){
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .pro {
+    color: #000;
     margin: 20px 0;
     width: 100%;
     min-width: 20%;

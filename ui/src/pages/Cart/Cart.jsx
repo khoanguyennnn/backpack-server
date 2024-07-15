@@ -9,8 +9,9 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { baseImageURL } from '../../routes';
 import { UserContext } from '../../context/UserContext';
-import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import Button from '../../components/Button';
+import { isFunction, values } from 'lodash';
 
 const cx = classNames.bind(styles)
 
@@ -18,11 +19,9 @@ function Cart() {
     const [products, setProducts] = useState([]);
     const [reRender, setReRender] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
-
-    const { user } = useContext(UserContext);
+    const { user, cartItemCountContext } = useContext(UserContext);
 
     const navigate = useNavigate();
-
     let price = 0;
    
     useEffect(() => {
@@ -39,14 +38,16 @@ function Cart() {
                         .reduce((partialSum, a) => partialSum + a, 0)
                     ).toFixed(2)
                 )
+                cartItemCountContext(res.length)
             } else {
+                cartItemCountContext(res.length)
                 setProducts(res)
                 setTotalPrice(0)
             }
         }
         fetchApi()
     }, [reRender])
-    
+
     const removeCart = async (productId) => {
         await cartServices.removeCart(productId);
         setReRender(!reRender);
@@ -83,15 +84,15 @@ function Cart() {
                 {!products || products?.length === 0 ? (
                     <>
                         {user && user.auth ? 
-                            <div>
+                            <div className={cx('login-failed')}>
                                 <h3>YOUR BAG IS EMPTY</h3>
                                 <p>Once you add something to your bag - it will appear here. Ready to get started?</p>
                             </div>
                         :
-                            <div>
+                            <div className={cx('login-failed')}>
                                 <h3>PLEASE LOGIN TO ADD SOMETHING TO YOUR BAG</h3>
                                 <p>Once you add something to your bag - it will appear here. Ready to get started?</p>
-                                <Button variant="dark" onClick={() => {navigate(`/login`)}}>Login</Button>
+                                <Button primary to={`/login`}>Login</Button>
                             </div>
                         }
                     </>
@@ -123,7 +124,7 @@ function Cart() {
                                                             <button className={cx('quantity-btn')} onClick={() => {handleClickMinusBtn(product.product._id)}}>
                                                                 <FontAwesomeIcon icon={faMinus}/>
                                                             </button>
-                                                            <input className={cx('quantity-input')} readOnly type="number" value={product.quantity}/>
+                                                            <input className={cx('quantity-input')} readOnly type="text" value={product.quantity}/>
                                                             <button className={cx('quantity-btn')} onClick={() => {handleClickPlusBtn(product.product._id)}}>
                                                                 <FontAwesomeIcon icon={faPlus}/>   
                                                             </button>

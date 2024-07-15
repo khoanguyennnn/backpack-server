@@ -113,14 +113,14 @@ function Ordering() {
                                     <div key={index}>
                                         <div className={cx('order-detail')}>
                                             <div className={cx('product-info')}>
-                                                <img className={cx('image')} src={baseImageURL+ value.product.image} alt="" />
+                                                <img className={cx('image')} src={baseImageURL+ value.product?.image} alt="" />
                                                 <div className={cx('product-title')}>
-                                                    <h4>{value.product.title}</h4>
-                                                    <h5>Quantity - {value.quantity}</h5>
+                                                    <h4>{value.product?.title}</h4>
+                                                    <h5>Quantity - {value?.quantity}</h5>
                                                 </div>
                                             </div>
                                             <div className={cx('product-price')}>
-                                                <h2>Price: $ {value.product.price}</h2>
+                                                <h2>Price: $ {value.product?.price}</h2>
                                             </div>
                                         </div>
                                         <hr />

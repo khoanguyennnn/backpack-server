@@ -1,3 +1,6 @@
+@import '../../../components/sass/Abstract/mixin';
+@import '../../../components/sass/Base/animation';
+
 .wrapper {
     --search-border-radius : 92px;
     --search-height : 46px;
@@ -6,6 +9,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     z-index: 10;
     width: 100%;
     height: 60px;
@@ -24,17 +28,74 @@
 }
 
 
-.logo {
-    width: 320px;
+.logo-img{
+    width: var(--logo-width);
 }
 
-.logo-img{
-    width: 80%;
+
+
+.wrapper-action{
+    display: flex;
+    width: 60%;
+    justify-content: center;
+    .close-btn {
+        display: none;  
+    }
+    @include respond (tab-land){
+        padding-top: 20px;
+        width: 320px;
+        max-width: 100%;
+        height: 100vh;
+        display: inline-block;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        z-index: 2000;
+        transform: translateX(100%);
+        transition: all linear 0.3s;  
+        .close-btn {
+            display: inline-block;
+            position: absolute;
+            right: 0;
+            text-align: center;
+            width: 50px;
+            font-size: 2.5rem;
+        }
+    }
 }
 
 .actions{
     display: flex;
     align-items: center;
+    .actions-function {
+        display: none;
+    }
+    @include respond (tab-land){
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        margin-top: 25px;
+        width: 100%;
+        a {
+            width: 100%;
+        }
+        span {
+            padding: 10px;
+            font-size: 2rem;
+        }
+    }
+    @include respond (phone) {
+        .actions-function {
+            display: block;
+            width: 100%;
+        }
+    }
 }
 
 .navigation{
@@ -44,33 +105,119 @@
     margin: 0 12px;
     transition: 0.3s ease;
 
+    &__circle-number{
+        display: flex;
+        font-size: 1.1rem;
+        background-color: #c21515;
+        border-radius: 100%;
+        width: 15px;
+        height: 15px;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        position: absolute;
+        right: 25px;
+        top: 8px;
+    }
+
+    @include respond (tab-land){
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+        padding: 8px 36px;
+        margin: 0;
+        width: 100%;
+        line-height: 1.3;
+        text-align: left;
+        min-height: 50px;
+
+        svg {
+            margin-right: 8px;
+            font-size: 2rem;
+            width: 20px;
+        }
+
+        &__circle-number{
+            right: 20px;
+        }
+    } 
+
     &:hover {
         cursor: pointer;
         color: red;
     }
+
+
 }
 
 .actions2 {
     display: flex;
+    @include respond (tab-land){
+        display: flex;
+    } 
+    @include respond (phone){
+        display: none;
+    } 
 }
 
 .cart {
     display: flex;
     align-items: center;
     width: 70px;
+    position: relative;
 }
 
 .cart-icon{
+    color: #000;
     font-size: 1.6rem;
     padding: 10px 20px;
     cursor: pointer;
+    @include respond (tab-land){
+        font-size: 2.5rem;
+    }
+    @include respond (phone){
+        padding: 0;
+        margin-right: 8px;
+    } 
 }
 
 .profile-btn {
     padding: 14px;
     width: 50px;
     background-color: transparent;
+    @include respond (tab-land){
+        font-size: 2.5rem;
+    } 
 }
+
+.action-btn {
+    display: none;
+    cursor: pointer;
+    @include respond (tab-land){
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        font-size: 2.5rem;
+    } 
+}
+
+.nav__overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba($color: #000000, $alpha: 0.3);
+    animation: fadeIn linear 0.3s;
+}
+
+// .nav__input:checked ~ .nav__overlay {
+//     display: block;
+// }
+
+
 
 
 

@@ -1,9 +1,18 @@
 @import 'normalize.css';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import '../sass/Abstract/mixin';
 
 :root {
-    --primary: #60afdf;
+    --primary: #d8d8d8e7;
+    --secondary: #8a8a8ad8;
     --search-width: 361px; 
+    --logo-width: 256px;
+    @include respond(tab-port){
+        --logo-width: 150px;
+    }
+    @include respond(phone){
+        --logo-width: 60px;
+    }
 }
 
 * {
@@ -19,12 +28,24 @@ p {
 
 html {
     font-size: 62.5%;
+    height: -webkit-fill-available;
+
+    @include respond(tab-land){
+        font-size: 56.25%;
+    }
+    @include respond(tab-port){
+        font-size: 50%;
+    }
+    @include respond(big-desktop){
+        font-size: 70%;
+    }
 }
 
 body {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.6rem;
     overflow-y: overlay;
+    height: -webkit-fill-available;
 }
 
 // Scrollbar css
@@ -48,7 +69,7 @@ input,
 [tabindex] {
     border: none;
     outline: none;
-    font-size: 1.6rem !important;
+    font-size: 1.6rem;
 }
 
 a,
@@ -56,7 +77,6 @@ a:hover,
 a:active,
 a:visited,
 a:link {
-    color: black;
     text-decoration: none;
 }
 
@@ -74,4 +94,26 @@ h1 {
 
 img {
     max-width: 500px;
+    width: 100%;
+}
+
+// Hide on mobile and tablet
+@media (max-width: 1023px){
+    .hide-on-mobile-tablet{
+        display: none;
+    }
+}
+
+// Hide on tablet
+@media (min-width: 740px) and (max-width: 1023px){
+    .hide-on-tablet{
+        display: none;
+    }
+}
+
+// Hide on mobile
+@media (min-width: 739px){
+    .hide-on-mobile{
+        display: none;
+    }
 }

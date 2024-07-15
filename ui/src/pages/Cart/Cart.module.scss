@@ -1,29 +1,43 @@
+@import '../../components/sass/Abstract/mixin';
+
 .wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 75vh;
+
+    .login-failed{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
+
 
 .content {
     width: 90%;
     padding: 50px;
+    @include respond(tab-port){
+        padding: 0;
+        width: 95%;
+    }
 }
 
 .card {
     display: grid;
     grid-template-columns: 70% 30%;
-}
-
-.card-left {
-    padding-right: 10px;
+    gap: 20px;
+    @include respond(tab-land){
+        grid-template-columns: repeat(1,1fr);
+    }
 }
 
 .left-box {
     width: 100%;
     border-radius: 20px;
     background-color: #424242;
-    padding: 40px;
+    padding: 40px 20px;
     color: wheat;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.6)
 }
@@ -38,6 +52,13 @@
     justify-content: space-between;
     height: 100px;
     align-items: center;
+    .product-quantity {
+        @include respond (phone){
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
 }
 
 .product-image {
@@ -55,10 +76,20 @@
 
 .product-name{
     width: 20%;
+    @include respond (phone) {
+        h3 {
+            font-size: 1.1rem;
+        }
+    }
 }
 
 .product-price{
     width: 10%;
+    @include respond (phone) {
+        h3 {
+            font-size: 1.1rem;
+        }
+    }
 }
 
 .quantity-btn {
@@ -70,6 +101,7 @@
 }
 
 .quantity-input {
+    text-align: center;
     margin: 0 8px;
     width: 42px;
     padding: 6px;
@@ -82,10 +114,6 @@
     font-size: 2rem;
     padding: 0 10px;
     cursor: pointer;
-}
-
-.card-right {
-    padding-left: 10px;
 }
 
 .right-box {

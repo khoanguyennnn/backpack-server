@@ -1,11 +1,21 @@
+@import '../../components/sass/Abstract/mixin';
+
 .product{
     padding: 20px 0;
+    h2 {
+        font-size: 3rem;
+    }
 }
 
 .pro-container{
     margin: 50px 0;
     display: grid;
     grid-template-columns: 60% 40%;
+    @include respond(tab-port) {
+        grid-template-columns: repeat(1, 1fr);
+        margin-top: 20px;
+    }
+    
 }
 
 .grid-left{
@@ -16,21 +26,35 @@
 }
 
 .grid-container {
+    display: flex;
+    justify-content: center;
     width: 80%;
     border: 1px solid rgba(117, 117, 117, 0.842);
-    padding: 20px 140px;
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
+    padding: 20px 30px;
+    @include respond(tab-port) {
+        width: 100%;
+        border: none;
+    }
 }
 
 .image {
-    width: 500px;
+    width: 100%;
     height: 600px;
     object-fit: cover;
+    border-radius: 50px;
 }
 
 .grid-right{
     padding: 40px;
     // background-color: blue;
+    @include respond(tab-port) {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .tag {
@@ -86,12 +110,8 @@
 }
 
 .other-container{
-    width: 100%;
-    justify-content: space-around;
-    display: flex;
-    flex-wrap: nowrap;
+    width: 99%;
     margin: 20px 0;
-    overflow-x: auto;
 }
 
 .link-container{
@@ -102,14 +122,18 @@
     width: 23%;
     min-width: 20%;
     padding: 10px 55px;
-    border: 1px solid rgba(117, 117, 117, 0.842);
     cursor: pointer;
     box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
-
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
     &:hover {
         border: 1px solid black;
         background-color: rgba(117, 117, 117, 0.06);
         box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.06);
+        @include respond(tab-land){
+            border: none;
+        }
     }
 
     img {
@@ -118,4 +142,11 @@
         object-fit: cover;
         border-radius: 12px;
     }
+    .des {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: black;
+    }
 }
+

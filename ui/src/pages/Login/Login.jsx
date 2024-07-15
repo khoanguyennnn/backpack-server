@@ -73,7 +73,6 @@ function Login() {
                         />
                         <FontAwesomeIcon className={cx('eye-icon')} icon={isShowPassword === true ? faEye : faEyeSlash} onClick={() => setIsShowPassword(!isShowPassword)} />
                     </div>
-                    <p className={cx('forgot-password')}>Forgot password?</p>
                 </div>
                 {
                     isNotFound &&

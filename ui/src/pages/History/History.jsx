@@ -14,6 +14,19 @@ function History() {
 
     const [checked, setChecked] = useState([]);
 
+    const handleDateFormat = (date) => {
+        var n=[];
+        var d = new Date(date);
+        var s = d.getUTCDate();
+        n.push(s+'/');
+        s=d.getUTCMonth();
+        n.push(s+'/');
+        s=d.getUTCFullYear();
+        n.push(s);
+
+        return n;
+    }
+
     const handleCheck = (id) => {
         setChecked(prev => {
             const isChecked = checked.includes(id)
@@ -55,7 +68,7 @@ function History() {
                                     <tbody>
                                         <tr>
                                             <td>{value._id}</td>
-                                            <td>{value.createdAt}</td>
+                                            <td>{handleDateFormat(value?.createdAt)}</td>
                                             <td>$ {value.totalPrice}</td>
                                             <td>{value.status}</td>
                                         </tr>

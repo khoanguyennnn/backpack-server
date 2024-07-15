@@ -1,3 +1,5 @@
+@import '../../../components/sass/Abstract/mixin';
+
 .search-wrapper {
     // margin-left: 176px;
     justify-content: center;
@@ -6,6 +8,9 @@
 
 .search-result, .search{
     width: var(--search-width);
+    @include respond (phone){
+        width: 100%;
+    }
 }
 
 .search {

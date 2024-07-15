@@ -7,10 +7,9 @@
     display: flex;
     justify-content: center;
     padding: 10px 0;
-
     &:hover {
         background-color: bisque;
-        transition: 0.1s ease;
+        transition: 0.3s ease;
     }
 }
 

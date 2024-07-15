@@ -9,7 +9,7 @@ function About() {
     return (
         <div className={cx('wrapper')}>
             <div>
-                <img src={about} alt="" />
+                <img src={about} alt="About Picture" />
             </div>
             <div className={cx('content')}>
                 <h3>FIND THE BEST BAG FOR YOU</h3>
