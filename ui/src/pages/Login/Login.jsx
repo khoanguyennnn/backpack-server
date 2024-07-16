@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import classNames from 'classnames/bind';
 
 import * as userServices from '../../services/userServices';
+import * as cartServices from '../../services/cartServices';
 import styles from './Login.module.scss';
 import logo from '../../assets/logo/logo.jpg';
 import { UserContext } from '../../context/UserContext';
@@ -22,7 +23,7 @@ function Login() {
     const [isNotFound, setIsNotFound] = useState(false);
     const [warningLog, setWarningLog] = useState('');
 
-    const { loginContext, user } = useContext(UserContext);
+    const { loginContext, user, cartItemCountContext} = useContext(UserContext);
 
     const handleLogin = async () => {
         setWarningLog('');
@@ -34,6 +35,8 @@ function Login() {
         let res = await userServices.loginApi(email, password);
         if(res && res.data.accessToken){
             loginContext(email, res.data.accessToken, res.data.refreshToken);
+            let cart = await cartServices.getCart();
+            cartItemCountContext(cart.length);
         } else {
             // error
             if(res && (res.status !== 200)){

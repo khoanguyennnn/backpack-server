@@ -140,7 +140,14 @@
         &__circle-number{
             right: 20px;
         }
-    } 
+    }
+    
+    @include respond (phone){
+        &__circle-number{
+            right: 0px;
+            top: -5px;
+        }
+    }
 
     &:hover {
         cursor: pointer;

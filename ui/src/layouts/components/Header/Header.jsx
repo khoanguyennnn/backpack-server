@@ -29,7 +29,6 @@ function Header() {
     const getData = function(data){
         setProducts(data);
     };
-
     // Listen resolution change
     var x = window.matchMedia("(max-width: 1200px)")
 
@@ -104,13 +103,14 @@ function Header() {
         },
     ]
 
-    const { logout, user, cartItemCount } = useContext(UserContext);
+    const { logout, user, cartItemCount, cartItemCountContext } = useContext(UserContext);
     const navigate = useNavigate()
 
     const logOutApi = async () => {
         let res = await userServices.logoutApi(localStorage.getItem('refreshToken'));
         if(res) {
             navigate('/');
+            cartItemCountContext(0);
         } 
     }
 
@@ -123,7 +123,7 @@ function Header() {
                 setIsAdmin(false);
             }
         }
-        getData(cartItemCount)
+        getData(localStorage.getItem('cartItemCount'))
         userInfo()
     }, [user.auth])
 
@@ -157,7 +157,14 @@ function Header() {
                                 <span>Shopping</span>
                                 <Link className={cx('cart')} to={`/cart`} onClick={isShowNavBar}>
                                     <div className={cx('navigation')}>
-                                        <FontAwesomeIcon className={cx('cart-icon')} icon={faCartShopping}/>
+                                        <div>
+                                            <FontAwesomeIcon className={cx('cart-icon')} icon={faCartShopping}/>
+                                            {(cartItemCount != 0 && cartItemCount != null) && 
+                                            <div className={cx('navigation__circle-number')}>
+                                                {cartItemCount}
+                                            </div>
+                                            }
+                                        </div>
                                         Cart
                                     </div>
                                 </Link>
@@ -193,7 +200,7 @@ function Header() {
                         </Menu>
                         <Link className={cx('cart')} to={`/cart`}>
                             <FontAwesomeIcon className={cx('cart-icon')} icon={faCartShopping}/>
-                            {cartItemCount != 0 && cartItemCount == '' && 
+                            {(cartItemCount != 0 && cartItemCount != null) && 
                                 <div className={cx('navigation__circle-number')}>
                                     {cartItemCount}
                                 </div>
