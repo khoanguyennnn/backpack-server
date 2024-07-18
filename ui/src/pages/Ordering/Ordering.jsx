@@ -34,7 +34,6 @@ function Ordering() {
             let res = await orderServices.getAllOrder();
             setOrderInfo(res);
         }
-
         fetchApi()
     }, [reRender])
 

@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import 'tippy.js/dist/tippy.css';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faUser, faRightToBracket, faUserPlus, faRightFromBracket, faCircleInfo, faClockRotateLeft, faBars, faX } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faUser, faRightToBracket, faUserPlus, faRightFromBracket, faCircleInfo, faClockRotateLeft, faBars, faX, faXmark, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -206,10 +206,12 @@ function Header() {
                                 </div>
                             }
                         </Link>
-                    </div>               
-                    <label htmlFor="nav__mobile-input" className={cx('action-btn')} onClick={()=> showNavBar()}>
-                        <FontAwesomeIcon icon={faBars} />
-                    </label>
+                    </div>
+                    <div className={cx('nav__mobile-action')}>
+                        <label htmlFor="nav__mobile-input" className={cx('action-btn')} onClick={()=> showNavBar()}>
+                            <FontAwesomeIcon icon={faBars} />
+                        </label>
+                    </div>
                     <label ref={navOverlayRef} htmlFor="nav__mobile-input" className={cx('nav__overlay')} onClick={()=> showNavBar()}></label>
                 </div>
             </header>

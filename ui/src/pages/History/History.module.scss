@@ -1,15 +1,18 @@
+@import '../../components/sass/Abstract/mixin';
+
 .wrapper {
     margin: 20px 0;
 }
 
-table {
-    width: 60%;
-}
 
 .image {
     width: 150px;
     height: 150px;
     object-fit: cover;
+    @include respond(phone){
+        width: 50px;
+        height: 50px;
+    }
 }
 
 .order-wrapper{
@@ -26,6 +29,15 @@ table {
     padding: 20px;
     border: 1px solid black;
     border-radius: 20px;
+    @include respond(tab-land){
+        width: 80%;
+    }
+    @include respond(tab-port){
+        width: 90%;
+    }
+    @include respond(phone){
+        width: 100%;
+    }
 }
 
 .order-info {
@@ -33,6 +45,19 @@ table {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    table {
+        width: 100%;
+        tbody{
+            tr{
+                td{
+                    @include respond(phone){
+                        overflow-wrap: anywhere;
+                    }
+                } 
+            }
+        }
+    }
 }
 
 .dropdown-icon{
@@ -52,6 +77,16 @@ table {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @include respond(tab-land){
+        width: 70%;
+    }
+    @include respond(tab-port){
+        width: 100%;
+    }
+    @include respond(phone){
+        justify-content: start;
+        gap: 10px;
+    }
 }
 
 .product-title {

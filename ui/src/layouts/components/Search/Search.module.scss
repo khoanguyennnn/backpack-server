@@ -8,7 +8,7 @@
 
 .search-result, .search{
     width: var(--search-width);
-    @include respond (phone){
+    @include respond (tab-port){
         width: 100%;
     }
 }
@@ -100,4 +100,8 @@
     &:active{
         background-color: rgba(22,24,35, 0.06);
     }
+}
+
+.info {
+    color: black;
 }
