@@ -104,7 +104,7 @@ function Home() {
                         <div className={cx('card-overlay-side', 'card-overlay-side-back')}>
                             <div className={cx('card-des')}>
                                 <p>Coolbag featured</p>
-                                <h3>Melanophile Catena</h3>
+                                <h3>Melanophile Perla</h3>
                             </div>
                             <Link to={'/products'}>
                                 <Button primary large>Shop Now</Button>
@@ -116,13 +116,13 @@ function Home() {
                             <img className={cx('card-img')} src={card3} alt={card3} />
                             <div className={cx('card-des')}>
                                 <p>Coolbag featured</p>
-                                <h3>Melanophile Auguri</h3>
+                                <h3>Melanophile Catena</h3>
                             </div>
                         </div>
                         <div className={cx('card-overlay-side', 'card-overlay-side-back')}>
                             <div className={cx('card-des')}>
                                 <p>Coolbag featured</p>
-                                <h3>Melanophile Auguri</h3>
+                                <h3>Melanophile Catena</h3>
                             </div>
                             <Link to={'/products'}>
                                 <Button primary large>Shop Now</Button>
