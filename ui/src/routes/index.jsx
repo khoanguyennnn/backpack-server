@@ -28,6 +28,6 @@ const privateRoutes = [
     { path: '/ordering', component: Ordering},
 ]
 
-const baseImageURL = "https://backpack-server.onrender.com/Images/"
+const baseImageURL = "https://backpack-server-1.onrender.com/Images/"
 
 export {publicRoutes, privateRoutes, baseImageURL}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-    baseURL: 'https://backpack-server.onrender.com/api/'
+    baseURL: 'https://backpack-server-1.onrender.com/api/'
 })
 
 export const get = async (path, options = {}) => {
